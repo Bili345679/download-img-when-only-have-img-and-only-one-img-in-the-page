@@ -6,7 +6,7 @@
 // @author       You
 // @include      *
 // @grant        none
-// @require      https://code.jquery.com/jquery-1.12.1.min.js
+// @require      https://code.jquery.com/jquery-1.11.1.min.js
 // ==/UserScript==
 
 (function() {

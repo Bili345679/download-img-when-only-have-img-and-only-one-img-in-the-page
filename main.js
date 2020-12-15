@@ -6,15 +6,15 @@
 // @author       You
 // @include      *
 // @grant        none
-// @require      https://code.jquery.com/jquery-3.5.1.min.js
+// @require      https://code.jquery.com/jquery-1.12.1.min.js
 // ==/UserScript==
 
 (function() {
     'use strict';
     //$(document).ready(function(){
-        console.log(document.domain)
-        console.log(window.location.host)
         if($('body').children().length == 1 && $('body').children().eq(0).prop("tagName") == 'IMG'){
+            console.log(document.domain)
+            console.log(window.location.host)
             console.log('img only')
 
             var img = $('img')

@@ -6,39 +6,47 @@
 // @author       You
 // @include      *
 // @grant        none
-// @require      https://code.jquery.com/jquery-1.11.1.min.js
+// @require      https://code.jquery.com/jquery-3.5.1.min.js
 // ==/UserScript==
 
 (function() {
     'use strict';
-    //$(document).ready(function(){
-        if($('body').children().length == 1 && $('body').children().eq(0).prop("tagName") == 'IMG'){
-            console.log(document.domain)
-            console.log(window.location.host)
-            console.log('img only')
+    // console.log(document.domain)
+    // console.log(window.location.host)
+    // console.log($('body').children().eq(0).prop("tagName") == 'IMG')
+    if(window.location.host == 'www.gamersky.com' && $('body').children().eq(0).prop("tagName") == 'IMG'){
+        var img_src = window.location.search.substr(1)
+        window.location.href = img_src
+    }else{
+        $(document).ready(function(){
+            // console.log($('body').children().length)
+            // console.log($('body').children().length)
+            if(($('body').children().length == 1 || $('body').children().length == 2) && $('body').children().eq(0).prop("tagName") == 'IMG'){
+                // console.log('img only')
 
-            var img = $('img')
-            var img_src = img[0].src
+                var img = $('img')
+                var img_src = img[0].src
 
-            var save_link = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
-            //地址
-            save_link.href = img_src
-            save_link.download = name
-            var ev = document.createEvent("MouseEvents")
-            ev.initMouseEvent(
-                "click", true, false, window, 0, 0, 0, 0, 0
-                , false, false, false, false, 0, null
-            )
-            save_link.dispatchEvent(ev)
+                var save_link = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
+                //地址
+                save_link.href = img_src
+                save_link.download = name
+                var ev = document.createEvent("MouseEvents")
+                ev.initMouseEvent(
+                    "click", true, false, window, 0, 0, 0, 0, 0
+                    , false, false, false, false, 0, null
+                )
+                save_link.dispatchEvent(ev)
 
-            // 关闭页面
-            close_page()
-        }
-    //})
+                // 关闭页面
+                close_page()
+            }
+        })
+    }
 })();
 
 function close_page(){
-    console.log('close page')
+    // console.log('close page')
     if (navigator.userAgent.indexOf('MSIE') > 0) { // close IE
         if (navigator.userAgent.indexOf('MSIE 6.0') > 0) {
             window.opener = null;

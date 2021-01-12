@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         自动下载只有图片文件的页面里面的图片
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  try to take over the world!
 // @author       You
 // @include      *
-// @grant        none
+// @grant        GM_download
 // @require      https://code.jquery.com/jquery-3.5.1.min.js
 // ==/UserScript==
 
@@ -14,36 +14,59 @@
     // console.log(document.domain)
     // console.log(window.location.host)
     // console.log($('body').children().eq(0).prop("tagName") == 'IMG')
-    if(window.location.host == 'www.gamersky.com' && $('body').children().eq(0).prop("tagName") == 'IMG'){
-        var img_src = window.location.search.substr(1)
-        window.location.href = img_src
+    var url = window.location.href
+    if(url.indexOf('https://www.gamersky.com/showimage/id_gamersky.shtml?') == 0){
+        var num = url.lastIndexOf('?')+1
+        var img_src = url.substring(num)
+
+        // 下载
+        download_img(img_src)
     }else{
         $(document).ready(function(){
             // console.log($('body').children().length)
             // console.log($('body').children().length)
             if(($('body').children().length == 1 || $('body').children().length == 2) && $('body').children().eq(0).prop("tagName") == 'IMG'){
-                // console.log('img only')
+                // console.log('img only')·
 
                 var img = $('img')
                 var img_src = img[0].src
 
-                var save_link = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
-                //地址
-                save_link.href = img_src
-                save_link.download = name
-                var ev = document.createEvent("MouseEvents")
-                ev.initMouseEvent(
-                    "click", true, false, window, 0, 0, 0, 0, 0
-                    , false, false, false, false, 0, null
-                )
-                save_link.dispatchEvent(ev)
+                // 下载
+                download_img(img_src)
 
-                // 关闭页面
-                close_page()
             }
         })
     }
 })();
+
+function download_img(url){
+    var name = ''
+    if(url.indexOf('https://gss0.baidu.com/') == 0){
+        console.log('baidu')
+        var tick = new Date().getTime()
+        var random = Math.random()
+        name = (tick + '' + random).replace('0.', '_')
+    }else{
+        var num = url.lastIndexOf('/')+1
+        name = url.substring(num)
+    }
+
+    console.log(name)
+
+    GM_download({
+        name: name,
+        url: url,
+        onload: function(r){
+            console.log('GM_download_success')
+            // 关闭页面
+            close_page()
+        },
+        onerror: function(r){
+            console.log('GM_download_error', r)
+        }
+    })
+
+}
 
 function close_page(){
     // console.log('close page')
